@@ -1,12 +1,4 @@
-// import LoginFormZod from "../_components/LoginFormZod";
 
-// export default function LoginPage() {
-//   return (
-//     <div>
-//       <LoginFormZod />
-//     </div>
-//   );
-// }
 
 import LoginFormZod from "../_components/LoginFormZod";
 
@@ -19,7 +11,7 @@ export default function LoginPage() {
           <img
             src="\images\logo.png"
             alt="Sajilo Stay"
-            className="w-full max-w-[420px] object-contain"
+            className="w-full max-w-[1000px] object-contain"
           />
         </div>
 

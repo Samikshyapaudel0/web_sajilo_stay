@@ -1,55 +1,4 @@
-// // import { z } from "zod";
 
-// // export const loginSchema = z.object({
-// //   email: z.email("Invalid email address"),
-// //   password: z.string().min(6, "Password must be at least 6 characters"),
-// // });
-// // export type LoginFormData = z.infer<typeof loginSchema>;
-
-// // export const registerSchema = z
-// //   .object({
-// //     fullName: z.string().min(2, "Enter your full name"),
-// //     email: z.email("Invalid email address"),
-// //     password: z.string().min(6, "Password must be at least 6 characters"),
-// //     confirmPassword: z
-// //       .string()
-// //       .min(6, "Confirm Password must be at least 6 characters"),
-// //   })
-// //   .refine((data) => data.password === data.confirmPassword, {
-// //     message: "Passwords do not match",
-// //   });
-// // export type RegisterFormData = z.infer<typeof registerSchema>;
-
-// import { z } from "zod";
-
-// export const loginSchema = z.object({
-//   email: z.string().email("Invalid email address"),
-
-//   password: z.string().min(6, "Password must be at least 6 characters"),
-// });
-
-// export type LoginFormData = z.infer<typeof loginSchema>;
-
-// export const registerSchema = z
-//   .object({
-//     fullname: z.string().min(2, "Enter your full name"),
-
-//     email: z.string().email("Invalid email address"),
-
-//     password: z.string().min(6, "Password must be at least 6 characters"),
-
-//     confirmPassword: z
-//       .string()
-//       .min(6, "Confirm Password must be at least 6 characters"),
-
-//   })
-
-//   .refine((data) => data.password === data.confirmPassword, {
-//     message: "Passwords do not match",
-//     path: ["confirmPassword"],
-//   });
-
-// export type RegisterFormData = z.infer<typeof registerSchema>;
 
 import { z } from "zod";
 
@@ -71,11 +20,7 @@ export const registerSchema = z
 
     phoneNumber: z.string().min(10, "Phone number must be at least 10 digits"),
     gender: z.enum(["male", "female", "other"], {
-
       message: "Please select a gender",
-
-
-    
     }),
 
     email: z.string().email("Invalid email address"),
@@ -85,9 +30,8 @@ export const registerSchema = z
     confirmPassword: z
       .string()
       .min(6, "Confirm Password must be at least 6 characters"),
-  })
-
-  .refine((data) => data.password === data.confirmPassword, {
+    profileImage: z.string().optional(),
+  }).refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });

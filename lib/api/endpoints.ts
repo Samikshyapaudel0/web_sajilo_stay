@@ -5,3 +5,4 @@ export const API = {
     LOGIN: "/api/v1/auth/login",
   },
 };
+ 

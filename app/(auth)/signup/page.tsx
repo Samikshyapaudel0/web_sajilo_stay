@@ -55,9 +55,9 @@ export default function SignupPage() {
           {/* Left Side Logo */}
           <div className="flex items-center justify-center p-10 border-r border-gray-200">
             <img
-              src="/images/logo.png"
+              src="\images\logo.png"
               alt="Sajilo Stay"
-              className="max-w-[280px] w-full h-auto"
+              className="w-full max-w-[420px] object-contain"
             />
           </div>
 
