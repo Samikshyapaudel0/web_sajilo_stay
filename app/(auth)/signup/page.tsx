@@ -1,49 +1,4 @@
-// import Link from "next/link";
-// import RegisterFormZod from "../_components/SignupFormZod";
 
-// export default function SignupPage() {
-//   return (
-//     <div className="min-h-screen bg-[#f3f3f3] flex items-center justify-center px-4 py-10">
-//       <div className="w-full max-w-md">
-//         {/* Card */}
-//         <div className="bg-white rounded-[24px] border border-gray-200 shadow-lg px-8 py-8">
-//           {/* Logo */}
-//           <div className="flex flex-col items-center">
-//             <img
-//               src="/images/logo.png"
-//               alt="Sajilo Stay"
-//               className="h-16 w-auto"
-//             />
-
-//             <h1 className="mt-4 text-2xl font-bold text-gray-900">
-//               Create Your Account
-//             </h1>
-
-//             <p className="mt-2 text-center text-gray-600 text-sm leading-relaxed max-w-xs">
-//               Join thousands of students and workers finding their ideal homes.
-//             </p>
-//           </div>
-
-//           {/* Form */}
-//           <div className="mt-8">
-//             <RegisterFormZod />
-//           </div>
-
-//           {/* Sign In */}
-//           <p className="text-center text-sm text-gray-600 mt-6">
-//             Already have an account?{" "}
-//             <Link
-//               href="/login"
-//               className="text-[#C5410F] font-semibold hover:underline"
-//             >
-//               Sign in
-//             </Link>
-//           </p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
 
 import RegisterFormZod from "../_components/SignupFormZod";
 

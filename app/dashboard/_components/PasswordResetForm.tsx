@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { UpdatePasswordFormData, updatePasswordSchema } from "./schema";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-import { handleUpdatePassword } from "@/lib/actions/auth-action";
+import { handleUpdatePassword } from "@/lib/actions/auth_action";
 export default function UpdatePasswordForm() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState("");

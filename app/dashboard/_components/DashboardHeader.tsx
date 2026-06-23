@@ -1,6 +1,7 @@
 "use client";
 
-import { handleLogout } from "@/lib/actions/auth-action";
+import { handleLogout } from "@/lib/actions/auth_action";
+
 
 export default function DashboardHeader() {
   return (
