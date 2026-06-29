@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { handleGetUserById } from "@/lib/actions/admin/user-action";
 import UserFormEdit from "../../_components/UserFormEdit";
+import { handleGetUserById } from "@/lib/actions/admin/user-action";
 
 export default async function Page({
   params,

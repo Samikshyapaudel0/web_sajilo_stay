@@ -9,19 +9,16 @@ const ACCEPTED_IMAGE_TYPES = [
 ];
 
 const base = {
-  firstName: z
-    .string("Must be a valid string")
-    .min(2, { message: "Minimum 2 characters" }),
-  lastName: z
-    .string("Must be a valid string")
-    .min(2, { message: "Minimum 2 characters" }),
-  email: z.email({ message: "Invalid email address" }),
-  username: z
-    .string("Must be a valid string")
-    .min(3, { message: "Minimum 3 characters" }),
+  firstName: z.string().min(2, "Minimum 2 characters"),
+
+  lastName: z.string().min(2, "Minimum 2 characters"),
+
+  email: z.string().email("Invalid email address"),
+
+  username: z.string().min(3, "Minimum 3 characters"),
+
   role: z.enum(["user", "admin"]),
 };
-
 // create posts JSON (no image — matches CreateUserDTO), requires a password
 export const createUserSchema = z.object({
   ...base,
