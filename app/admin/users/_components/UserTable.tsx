@@ -53,16 +53,32 @@ export default function UserTable({
 
   return (
     <div className="mx-auto w-full max-w-[1100px]">
+      {/* Stats Summary */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="bg-white rounded-lg shadow p-4 border-l-4 border-[#C63A07]">
+          <p className="text-sm text-gray-600">Total Users</p>
+          <p className="text-2xl font-bold text-gray-900">{total}</p>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+          <p className="text-sm text-gray-600">Admin Users</p>
+          <p className="text-2xl font-bold text-gray-900">{data?.filter((u) => u.role === "admin").length || 0}</p>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
+          <p className="text-sm text-gray-600">Regular Users</p>
+          <p className="text-2xl font-bold text-gray-900">{data?.filter((u) => u.role !== "admin").length || 0}</p>
+        </div>
+      </div>
+
       <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h2 className="text-3xl font-bold text-on-dark">Users</h2>
-          <p className="text-sm text-muted">{total} total</p>
+          <p className="text-sm text-muted">{total} total users</p>
         </div>
         <Link
           href="/admin/users/create"
-          className="flex h-10 items-center bg-on-dark px-4 text-xs font-bold uppercase tracking-[1.5px] text-canvas transition-opacity hover:opacity-90"
+          className="flex h-10 items-center bg-[#C63A07] px-4 text-xs font-bold uppercase tracking-[1.5px] text-white transition-opacity hover:opacity-90 rounded"
         >
-          New user
+          + New user
         </Link>
       </div>
 
@@ -72,9 +88,9 @@ export default function UserTable({
             name="search"
             defaultValue={search}
             placeholder="Search users..."
-            className="h-10 w-full border border-hairline bg-surface-card px-3 text-sm text-on-dark placeholder:text-muted outline-none focus:border-on-dark"
+            className="h-10 w-full border border-hairline bg-surface-card px-3 text-sm text-on-dark placeholder:text-muted outline-none focus:border-[#C63A07] focus:ring-1 focus:ring-[#C63A07] rounded"
           />
-          <button className="h-10 border border-hairline px-4 text-xs font-bold uppercase tracking-[1.5px] text-body transition-colors hover:text-on-dark">
+          <button className="h-10 border border-hairline px-4 text-xs font-bold uppercase tracking-[1.5px] text-body transition-colors hover:border-[#C63A07] hover:text-on-dark rounded">
             Search
           </button>
         </form>
@@ -84,7 +100,7 @@ export default function UserTable({
           <select
             value={limit}
             onChange={(e) => setQuery({ limit: e.target.value, page: 1 })}
-            className="h-10 border border-hairline bg-surface-card px-2 text-sm text-on-dark outline-none focus:border-on-dark"
+            className="h-10 border border-hairline bg-surface-card px-2 text-sm text-on-dark outline-none focus:border-[#C63A07] rounded"
           >
             {[5, 10, 20, 50].map((n) => (
               <option key={n} value={n}>
@@ -95,9 +111,9 @@ export default function UserTable({
         </label>
       </div>
 
-      <div className="overflow-x-auto border border-hairline">
+      <div className="overflow-x-auto border border-hairline rounded-lg shadow bg-white">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-hairline bg-surface-soft text-xs uppercase tracking-[1px] text-muted">
+          <thead className="border-b border-hairline bg-gray-50 text-xs uppercase tracking-[1px] text-muted">
             <tr>
               <th className="px-4 py-3 font-medium">Name</th>
               <th className="px-4 py-3 font-medium">Email</th>
@@ -111,19 +127,19 @@ export default function UserTable({
               data.map((u) => (
                 <tr
                   key={u._id}
-                  className="border-b border-hairline last:border-0 hover:bg-surface-soft"
+                  className="border-b border-hairline last:border-0 hover:bg-gray-50 transition-colors"
                 >
-                  <td className="px-4 py-3 text-on-dark">
+                  <td className="px-4 py-3 text-on-dark font-medium">
                     {u.firstName} {u.lastName}
                   </td>
                   <td className="px-4 py-3 text-body">{u.email}</td>
                   <td className="px-4 py-3 text-body">{u.username}</td>
                   <td className="px-4 py-3">
                     <span
-                      className={`inline-block rounded px-2 py-0.5 text-xs uppercase tracking-[1px] ${
+                      className={`inline-block rounded-full px-3 py-1 text-xs font-medium uppercase tracking-[1px] ${
                         u.role === "admin"
-                          ? "bg-electric-blue/20 text-bmw-blue"
-                          : "bg-surface-elevated text-muted"
+                          ? "bg-[#C63A07]/10 text-[#C63A07]"
+                          : "bg-gray-100 text-gray-600"
                       }`}
                     >
                       {u.role}
@@ -133,19 +149,19 @@ export default function UserTable({
                     <div className="flex justify-end gap-3 text-xs font-medium uppercase tracking-[1px]">
                       <Link
                         href={`/admin/users/${u._id}`}
-                        className="text-muted hover:text-on-dark"
+                        className="text-muted hover:text-[#C63A07] transition-colors"
                       >
                         View
                       </Link>
                       <Link
                         href={`/admin/users/${u._id}/edit`}
-                        className="text-muted hover:text-on-dark"
+                        className="text-muted hover:text-[#C63A07] transition-colors"
                       >
                         Edit
                       </Link>
                       <button
                         onClick={() => setTarget(u)}
-                        className="text-muted hover:text-m-red"
+                        className="text-muted hover:text-red-600 transition-colors"
                       >
                         Delete
                       </button>
@@ -172,14 +188,14 @@ export default function UserTable({
           <button
             disabled={page <= 1}
             onClick={() => setQuery({ page: page - 1 })}
-            className="h-9 border border-hairline px-3 text-xs uppercase tracking-[1px] text-body transition-colors hover:text-on-dark disabled:opacity-40"
+            className="h-9 border border-hairline px-3 text-xs uppercase tracking-[1px] text-body transition-colors hover:border-[#C63A07] hover:text-on-dark disabled:opacity-40 rounded"
           >
             Prev
           </button>
           <button
             disabled={page >= totalPages}
             onClick={() => setQuery({ page: page + 1 })}
-            className="h-9 border border-hairline px-3 text-xs uppercase tracking-[1px] text-body transition-colors hover:text-on-dark disabled:opacity-40"
+            className="h-9 border border-hairline px-3 text-xs uppercase tracking-[1px] text-body transition-colors hover:border-[#C63A07] hover:text-on-dark disabled:opacity-40 rounded"
           >
             Next
           </button>
@@ -201,14 +217,14 @@ export default function UserTable({
         <div className="flex justify-end gap-3">
           <button
             onClick={() => setTarget(null)}
-            className="h-10 border border-hairline px-4 text-xs font-bold uppercase tracking-[1.5px] text-body transition-colors hover:text-on-dark"
+            className="h-10 border border-hairline px-4 text-xs font-bold uppercase tracking-[1.5px] text-body transition-colors hover:text-on-dark rounded"
           >
             Cancel
           </button>
           <button
             onClick={onDelete}
             disabled={isPending}
-            className="h-10 bg-m-red px-4 text-xs font-bold uppercase tracking-[1.5px] text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="h-10 bg-[#C63A07] px-4 text-xs font-bold uppercase tracking-[1.5px] text-white transition-opacity hover:opacity-90 disabled:opacity-50 rounded"
           >
             {isPending ? "Deleting..." : "Delete"}
           </button>

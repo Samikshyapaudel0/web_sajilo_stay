@@ -1,6 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/contexts/AuthContext";
+import Link from "next/link";
 
 // segment -> page title; falls back to the raw segment
 const TITLES: Record<string, string> = {
@@ -21,11 +22,20 @@ export default function Header() {
 
   return (
     <header className="flex h-16 items-center justify-between border-b border-hairline bg-surface-soft px-6">
-      <div>
-        <p className="text-[11px] font-bold uppercase tracking-[1.5px] text-muted">
-          {segments.join(" / ")}
-        </p>
-        <h1 className="text-lg font-bold leading-none text-on-dark">{title}</h1>
+      <div className="flex items-center gap-4">
+        <Link href="/admin">
+          <img
+            src="/images/logo.png"
+            alt="Sajilo Stay"
+            className="h-8 w-auto"
+          />
+        </Link>
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-[1.5px] text-muted">
+            {segments.join(" / ")}
+          </p>
+          <h1 className="text-lg font-bold leading-none text-on-dark">{title}</h1>
+        </div>
       </div>
 
       <div className="flex items-center gap-4">

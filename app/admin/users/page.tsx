@@ -1,17 +1,29 @@
-import Link from "next/link";
-import UserForm from "./_components/UserForm";
+import { handleGetAllUsers } from "@/lib/actions/admin/user-action";
+import UserTable from "./_components/UserTable";
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  // get the search params
+  const query = await searchParams;
+  const page = query.page ? parseInt(query.page as string, 10) : 1;
+  const limit = query.limit ? parseInt(query.limit as string, 10) : 10;
+  const search = query.search ? (query.search as string) : "";
+  // call action to get all users with the search params
+  const result = await handleGetAllUsers({ page, limit, search });
 
-export default function Page() {
+  if (!result.success) {
+    throw new Error("Failed to load users");
+  }
+
   return (
-    <section>
-      <Link
-        href="/admin/users"
-        className="text-xs uppercase tracking-[1.5px] text-muted hover:text-on-dark"
-      >
-        ← Back to users
-      </Link>
-      <h2 className="mb-8 mt-4 text-3xl font-bold text-on-dark">New user</h2>
-      <UserForm />
-    </section>
+    <div>
+      <UserTable
+        data={result.data}
+        pagination={result.pagination}
+        search={search}
+      />
+    </div>
   );
 }

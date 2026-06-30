@@ -1,14 +1,6 @@
 "use server";
 import { createUser, deleteUser, getAllUsers, getUserById, updateUser, updateUserPassword } from "@/lib/api/admin/user";
 import { revalidatePath } from "next/cache";
-// import {
-//   getAllUsers,
-//   createUser,
-//   deleteUser,
-//   getUserById,
-//   updateUser,
-//   updateUserPassword,
-// } from "@/lib/api/admin/user";
 
 export const handleCreateUser = async (data: any) => {
   try {

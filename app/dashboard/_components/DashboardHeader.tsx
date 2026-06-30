@@ -1,18 +1,29 @@
 // "use client";
-
 // import { handleLogout } from "@/lib/actions/auth_action";
+// import { useAuth } from "@/lib/contexts/AuthContext";
+// import Link from "next/link";
 
 // export default function DashboardHeader() {
+//   const { user } = useAuth();
 //   return (
 //     <div className="flex items-center gap-4 justify-between">
-//       <a
-//         href="/dashboard"
-//         className="text-2xl font-bold uppercase leading-none tracking-tight text-on-dark"
-//       >
-//         <h2 className="text-2xl font-bold leading-none tracking-tight text-on-dark">
-//           Dashboard
-//         </h2>
-//       </a>
+//       <div className="flex items-center gap-4">
+//         <Link href="/dashboard">
+//           <img
+//             src="/images/logo.png"
+//             alt="Sajilo Stay"
+//             className="h-10 w-auto"
+//           />
+//         </Link>
+//         <a
+//           href="/dashboard"
+//           className="text-2xl font-bold uppercase leading-none tracking-tight text-on-dark"
+//         >
+//           <h2 className="text-2xl font-bold leading-none tracking-tight text-on-dark">
+//             Dashboard
+//           </h2>
+//         </a>
+//       </div>
 
 //       <nav className="flex gap-4" aria-label="Sections">
 //         <a
@@ -27,6 +38,14 @@
 //         >
 //           Password
 //         </a>
+//         {user?.role === "admin" && (
+//           <a
+//             href="/admin"
+//             className="text-sm font-medium text-muted hover:text-on-dark"
+//           >
+//             Admin
+//           </a>
+//         )}
 //         <button
 //           className="text-sm font-medium text-muted hover:text-on-dark"
 //           onClick={async () => {
@@ -46,7 +65,8 @@ import { useAuth } from "@/lib/contexts/AuthContext";
 
 export default function DashboardHeader() {
   const { user } = useAuth();
-  return (
+
+  console.log("Current User:", user);  return (
     <div className="flex items-center gap-4 justify-between">
       <a
         href="/dashboard"
@@ -78,6 +98,8 @@ export default function DashboardHeader() {
             Admin
           </a>
         )}
+
+       
         <button
           className="text-sm font-medium text-muted hover:text-on-dark"
           onClick={async () => {

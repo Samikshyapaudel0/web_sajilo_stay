@@ -23,7 +23,7 @@ const base = {
 export const createUserSchema = z.object({
   ...base,
   password: z
-    .string("Must be a valid string")
+    .string()
     .min(6, { message: "Minimum 6 characters" }),
 });
 export type CreateUserFormData = z.infer<typeof createUserSchema>;
