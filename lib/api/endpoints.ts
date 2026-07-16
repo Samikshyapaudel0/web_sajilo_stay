@@ -17,5 +17,26 @@ export const API = {
       DELETE: (id: string) => `/api/v1/admin/users/${id}`,
     },
   },
+  HOST: {
+    PROPERTIES: {
+      GET_ALL: "/api/v1/host/properties",
+      GET_BY_ID: (id: string) => `/api/v1/host/properties/${id}`,
+      CREATE: "/api/v1/host/properties",
+      UPDATE: (id: string) => `/api/v1/host/properties/${id}`,
+      DELETE: (id: string) => `/api/v1/host/properties/${id}`,
+    },
+  },
+  USER: {
+    PROPERTIES: {
+      GET_ALL: "/api/v1/properties",
+      GET_BY_ID: (id: string) => `/api/v1/properties/${id}`,
+    },
+    BOOKINGS: {
+      GET_ALL: "/api/v1/bookings",
+      GET_BY_ID: (id: string) => `/api/v1/bookings/${id}`,
+      CREATE: "/api/v1/bookings",
+      CANCEL: (id: string) => `/api/v1/bookings/${id}/cancel`,
+    },
+  },
 };
  
