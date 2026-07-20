@@ -25,6 +25,11 @@ export const API = {
       UPDATE: (id: string) => `/api/v1/host/properties/${id}`,
       DELETE: (id: string) => `/api/v1/host/properties/${id}`,
     },
+    BOOKINGS: {
+      GET_ALL: "/api/v1/host/bookings",
+      CONFIRM: (id: string) => `/api/v1/host/bookings/${id}/confirm`,
+      REJECT: (id: string) => `/api/v1/host/bookings/${id}/reject`,
+    },
   },
   USER: {
     PROPERTIES: {
@@ -40,3 +45,4 @@ export const API = {
   },
 };
  
+

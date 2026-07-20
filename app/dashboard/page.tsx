@@ -14,16 +14,44 @@ export default async function DashboardPage() {
   let recentBookings: any[] = [];
 
   try {
-    const [propertiesResult, bookingsResult] = await Promise.all([
-      getAllProperties({ page: 1, limit: 4 }),
-      getAllBookings({ page: 1, limit: 3 }),
-    ]);
-    recommendedProperties = propertiesResult.success ? propertiesResult.data : [];
-    recentBookings = bookingsResult.success ? bookingsResult.data : [];
-  } catch (error) {
-    // API not available - show empty state
-    console.log("API not available, showing empty state");
-  }
+    // const [propertiesResult, bookingsResult] = await Promise.all([
+    //   getAllProperties({ page: 1, limit: 4 }),
+    //   getAllBookings({ page: 1, limit: 3 }),
+    // ]);
+    // recommendedProperties = propertiesResult.success ? propertiesResult.data : [];
+    // recentBookings = bookingsResult.success ? bookingsResult.data : [];
+     const propertiesResult = await getAllProperties({
+    page: 1,
+    limit: 4,
+  });
+  
+
+  console.log("Properties Result:", propertiesResult);
+
+  recommendedProperties = propertiesResult.success
+    ? propertiesResult.data
+    : [];
+} catch (e) {
+  console.error("Properties Error:", e);
+}
+
+try {
+  const bookingsResult = await getAllBookings({
+    page: 1,
+    limit: 3,
+  });
+
+  console.log("Bookings Result:", bookingsResult);
+
+  recentBookings = bookingsResult.success
+    ? bookingsResult.data
+    : [];
+} catch (e) {
+  console.error("Bookings Error:", e);}
+  // } catch (error) {
+  //   // API not available - show empty state
+  //   console.log("API not available, showing empty state");
+  // }
 
   return (
     <section className="mx-auto w-full max-w-[1440px] px-6 py-16">
@@ -112,7 +140,7 @@ export default async function DashboardPage() {
       <div className="mb-8">
         <h2 className="text-xl font-bold text-on-dark mb-4">Browse by Category</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {["Apartment", "House", "Villa", "Cottage", "Studio", "Hostel"].map((category) => (
+          {["Apartment", "Home", "Room", "Hostel"].map((category) => (
             <Link
               key={category}
               href={`/dashboard/properties?category=${category.toLowerCase()}`}
@@ -175,7 +203,8 @@ export default async function DashboardPage() {
                       {booking.property?.title || "Property"}
                     </h3>
                     <p className="text-sm text-muted">
-                      {booking.checkIn} - {booking.checkOut}
+                      {new Date(booking.checkInDate).toLocaleDateString()} -{" "}
+                      {new Date(booking.checkOutDate).toLocaleDateString()}
                     </p>
                   </div>
                   <span

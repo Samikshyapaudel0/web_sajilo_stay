@@ -1,16 +1,14 @@
 import Link from "next/link";
-import Image from "next/image";
 
 export default function PropertyCard({ property }: { property: any }) {
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative h-48 bg-gray-200">
-        {property.imageUrl ? (
-          <Image
-            src={process.env.NEXT_PUBLIC_API_BASE_URL + property.imageUrl}
+        {property.images && property.images.length > 0 ? (
+          <img
+            src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/uploads/${property.images[0]}`}
             alt={property.title}
-            fill
-            className="object-cover"
+            className="w-full h-full object-cover"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
@@ -35,7 +33,7 @@ export default function PropertyCard({ property }: { property: any }) {
         <div className="flex items-center justify-between mb-4">
           <span className="text-sm text-body">{property.category}</span>
           <span className="text-lg font-bold text-[#C63A07]">
-            ${property.pricePerNight}/night
+            Rs {property.pricePerNight}/night
           </span>
         </div>
         <Link

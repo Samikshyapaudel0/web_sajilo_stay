@@ -62,11 +62,15 @@ export default function PropertyTable({
         </div>
         <div className="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
           <p className="text-sm text-gray-600">Available</p>
-          <p className="text-2xl font-bold text-gray-900">{data?.filter((p) => p.status === "available").length || 0}</p>
+          <p className="text-2xl font-bold text-gray-900">
+            {data?.filter((p) => p.status === "available").length || 0}
+          </p>
         </div>
         <div className="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
           <p className="text-sm text-gray-600">Booked</p>
-          <p className="text-2xl font-bold text-gray-900">{data?.filter((p) => p.status === "booked").length || 0}</p>
+          <p className="text-2xl font-bold text-gray-900">
+            {data?.filter((p) => p.status === "booked").length || 0}
+          </p>
         </div>
       </div>
 
@@ -133,9 +137,9 @@ export default function PropertyTable({
                 >
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
-                      {property.imageUrl ? (
-                        <Image
-                          src={process.env.NEXT_PUBLIC_API_BASE_URL + property.imageUrl}
+                      {property.images && property.images.length > 0 ? (
+                        <img
+                          src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/uploads/${property.images[0]}`}
                           alt={property.title}
                           width={48}
                           height={48}
@@ -147,13 +151,17 @@ export default function PropertyTable({
                         </div>
                       )}
                       <div>
-                        <p className="text-on-dark font-medium">{property.title}</p>
+                        <p className="text-on-dark font-medium">
+                          {property.title}
+                        </p>
                       </div>
                     </div>
                   </td>
                   <td className="px-4 py-3 text-body">{property.location}</td>
                   <td className="px-4 py-3 text-body">{property.category}</td>
-                  <td className="px-4 py-3 text-body font-medium">${property.pricePerNight}</td>
+                  <td className="px-4 py-3 text-body font-medium">
+                    Rs {property.pricePerNight}
+                  </td>
                   <td className="px-4 py-3">
                     <span
                       className={`inline-block rounded-full px-3 py-1 text-xs font-medium uppercase tracking-[1px] ${
@@ -228,10 +236,7 @@ export default function PropertyTable({
         title="Delete property"
       >
         <p className="mb-6 text-sm text-body">
-          Delete{" "}
-          <span className="font-bold text-on-dark">
-            {target?.title}
-          </span>
+          Delete <span className="font-bold text-on-dark">{target?.title}</span>
           ? This cannot be undone.
         </p>
         <div className="flex justify-end gap-3">

@@ -4,7 +4,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller } from "react-hook-form";
 import { toast, Slide } from "react-toastify";
-import { handleCreateProperty, handleUpdateProperty } from "@/lib/actions/host/property-action";
+import { useRouter } from "next/navigation";
+import {
+  handleCreateProperty,
+  handleUpdateProperty,
+} from "@/lib/actions/host/property-action";
+import { createProperty, updateProperty } from "@/lib/api/host/property";
 import { propertySchema, PropertyFormData } from "./schema";
 
 interface PropertyFormProps {
@@ -12,7 +17,11 @@ interface PropertyFormProps {
   isEdit?: boolean;
 }
 
-export default function PropertyForm({ property, isEdit = false }: PropertyFormProps) {
+export default function PropertyForm({
+  property,
+  isEdit = false,
+}: PropertyFormProps) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState("");
   const [previewImages, setPreviewImages] = useState<string[]>([]);
@@ -47,11 +56,13 @@ export default function PropertyForm({ property, isEdit = false }: PropertyFormP
       setValue("category", property.category || "");
       setValue("amenities", property.amenities || "");
       setValue("status", property.status || "available");
-      
+
       if (property.images && property.images.length > 0) {
-        setPreviewImages(property.images.map((img: string) => 
-          process.env.NEXT_PUBLIC_API_BASE_URL + img
-        ));
+        setPreviewImages(
+          property.images.map(
+            (img: string) => `${process.env.NEXT_PUBLIC_API_BASE_URL}/uploads/${img}`,
+          ),
+        );
       }
     }
   }, [property, isEdit, setValue]);
@@ -86,50 +97,110 @@ export default function PropertyForm({ property, isEdit = false }: PropertyFormP
     }
   };
 
-  const onSubmit = (data: PropertyFormData) => {
-    setError("");
-    startTransition(async () => {
-      try {
-        const formData = new FormData();
-        formData.append("title", data.title);
-        formData.append("description", data.description);
-        formData.append("location", data.location);
-        formData.append("pricePerNight", String(data.pricePerNight));
-        formData.append("category", data.category);
-        if (data.amenities) {
-          formData.append("amenities", data.amenities);
-        }
-        formData.append("status", data.status);
+ const onSubmit = (data: PropertyFormData) => {
+   console.log("[PropertyForm] onSubmit called");
+   console.log("Form data:", data);
+   console.log("data.images =", data.images);
 
-        if (data.images && data.images.length > 0) {
-          Array.from(data.images).forEach((file) => {
-            formData.append("images", file);
-          });
-        }
+   if (data.images) {
+     console.log("Number of selected files:", data.images.length);
 
-        let result;
-        if (isEdit && property) {
-          result = await handleUpdateProperty(property._id, formData);
-        } else {
-          result = await handleCreateProperty(formData);
-        }
+     Array.from(data.images).forEach((file, index) => {
+       console.log(`File ${index + 1}:`, {
+         name: file.name,
+         size: file.size,
+         type: file.type,
+       });
+     });
+   } else {
+     console.log("No images selected.");
+   }
 
-        if (result.success) {
-          toast.success(isEdit ? "Property updated successfully" : "Property created successfully", {
-            position: "top-center",
-            transition: Slide,
-          });
-          reset();
-          handleDismissImages();
-        } else {
-          throw new Error(result.message || "Failed to save property");
-        }
-      } catch (error: any) {
-        toast.error(error?.message);
-        setError(error?.message || "Failed to save property");
-      }
-    });
-  };
+   setError("");
+
+   startTransition(async () => {
+     try {
+       const formData = new FormData();
+
+       formData.append("title", data.title);
+       formData.append("description", data.description);
+       formData.append("location", data.location);
+       formData.append("pricePerNight", String(data.pricePerNight));
+       formData.append("category", data.category);
+
+       if (data.amenities) {
+         formData.append("amenities", data.amenities);
+       }
+
+       formData.append("status", data.status);
+
+       if (data.images && data.images.length > 0) {
+         Array.from(data.images).forEach((file) => {
+           formData.append("images", file);
+         });
+       }
+
+       console.log("========== FORMDATA ==========");
+
+       for (const [key, value] of formData.entries()) {
+         console.log(key, value);
+       }
+
+       console.log("==============================");
+
+       let result;
+
+       if (isEdit && property) {
+         result = await handleUpdateProperty(property._id, formData);
+       } else {
+        //  result = await handleCreateProperty(formData);
+        result = await createProperty(formData);
+       }
+
+      //  if (isEdit && property) {
+      //    result = await updateProperty(property._id, formData);
+      //  } else {
+      //    result = await createProperty(formData);
+      //  }
+
+       console.log("Server Action Result:", result);
+       console.log("========== RESULT ==========");
+       console.log(result);
+       console.log("Type:", typeof result);
+       console.log("Success:", result?.success);
+       console.log("Message:", result?.message);
+       console.log("============================");
+       
+
+       if (result.success) {
+         toast.success(
+           isEdit
+             ? "Property updated successfully"
+             : "Property created successfully",
+           {
+             position: "top-center",
+             transition: Slide,
+           },
+         );
+
+         reset();
+         handleDismissImages();
+
+         if (!isEdit) {
+           router.push("/host/properties");
+         }
+       } else {
+         throw new Error(result.message || "Failed to save property");
+       }
+     } catch (error: any) {
+       console.error("Submit Error:", error);
+
+       toast.error(error?.message || "Failed to save property");
+
+       setError(error?.message || "Failed to save property");
+     }
+   });
+ };
 
   const fieldClass =
     "h-12 w-full border border-hairline bg-surface-card px-4 text-on-dark placeholder:text-muted outline-none transition-colors focus:border-[#C63A07] focus:ring-1 focus:ring-[#C63A07] rounded-lg";
@@ -204,16 +275,12 @@ export default function PropertyForm({ property, isEdit = false }: PropertyFormP
             </div>
             <div>
               <label className={labelClass}>Category</label>
-              <select
-                {...register("category")}
-                className={fieldClass}
-              >
+              <select {...register("category")} className={fieldClass}>
                 <option value="">Select category</option>
                 <option value="apartment">Apartment</option>
-                <option value="house">House</option>
-                <option value="villa">Villa</option>
-                <option value="cottage">Cottage</option>
-                <option value="studio">Studio</option>
+                <option value="home">Home</option>
+                <option value="room">Room</option>
+                <option value="hostel">Hostel</option>
               </select>
               {errors.category && (
                 <span className={errClass}>{errors.category.message}</span>
@@ -233,10 +300,7 @@ export default function PropertyForm({ property, isEdit = false }: PropertyFormP
 
           <div>
             <label className={labelClass}>Status</label>
-            <select
-              {...register("status")}
-              className={fieldClass}
-            >
+            <select {...register("status")} className={fieldClass}>
               <option value="available">Available</option>
               <option value="booked">Booked</option>
               <option value="maintenance">Maintenance</option>
@@ -257,9 +321,7 @@ export default function PropertyForm({ property, isEdit = false }: PropertyFormP
                   ref={fileInputRef}
                   type="file"
                   multiple
-                  onChange={(e) =>
-                    handleImagesChange(e.target.files, onChange)
-                  }
+                  onChange={(e) => handleImagesChange(e.target.files, onChange)}
                   accept=".jpg,.jpeg,.png,.webp"
                   className="w-full h-12 border border-hairline bg-surface-card px-4 text-sm text-on-dark outline-none focus:border-[#C63A07] focus:ring-1 focus:ring-[#C63A07] rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-[#C63A07] file:text-white hover:file:bg-red-600"
                 />
@@ -286,7 +348,13 @@ export default function PropertyForm({ property, isEdit = false }: PropertyFormP
           disabled={isSubmitting || isPending}
           className="mt-8 flex h-12 w-full items-center justify-center bg-[#C63A07] text-xs font-bold uppercase tracking-[1.5px] text-white transition-opacity hover:opacity-90 disabled:opacity-50 rounded-lg shadow-md"
         >
-          {isPending ? (isEdit ? "Updating property..." : "Creating property...") : (isEdit ? "Update Property" : "Create Property")}
+          {isPending
+            ? isEdit
+              ? "Updating property..."
+              : "Creating property..."
+            : isEdit
+              ? "Update Property"
+              : "Create Property"}
         </button>
       </form>
     </div>

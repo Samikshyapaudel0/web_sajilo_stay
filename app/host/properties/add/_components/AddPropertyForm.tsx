@@ -4,10 +4,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller } from "react-hook-form";
 import { toast, Slide } from "react-toastify";
+import { useRouter } from "next/navigation";
 import { handleCreateProperty } from "@/lib/actions/host/property-action";
-import { propertySchema, PropertyFormData } from "./schema";
+import { PropertyFormData, propertySchema } from "../../_components/schema";
 
 export default function AddPropertyForm() {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState("");
   const [previewImages, setPreviewImages] = useState<string[]>([]);
@@ -91,6 +93,7 @@ export default function AddPropertyForm() {
           });
           reset();
           handleDismissImages();
+          router.push("/host/properties");
         } else {
           throw new Error(result.message || "Failed to create property");
         }
@@ -180,10 +183,9 @@ export default function AddPropertyForm() {
               >
                 <option value="">Select category</option>
                 <option value="apartment">Apartment</option>
-                <option value="house">House</option>
-                <option value="villa">Villa</option>
-                <option value="cottage">Cottage</option>
-                <option value="studio">Studio</option>
+                <option value="home">Home</option>
+                <option value="room">Room</option>
+                <option value="hostel">Hostel</option>
               </select>
               {errors.category && (
                 <span className={errClass}>{errors.category.message}</span>
@@ -241,7 +243,7 @@ export default function AddPropertyForm() {
                   <div key={index} className="relative">
                     <img
                       src={preview}
-                      alt={`Preview ${index + 1}`}
+                      alt={`Preview Rs {index + 1}`}
                       className="w-full h-24 object-cover rounded-lg"
                     />
                   </div>

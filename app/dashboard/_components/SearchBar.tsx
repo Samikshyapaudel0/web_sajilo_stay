@@ -44,10 +44,7 @@ export default function SearchBar() {
           >
             <option value="">All Categories</option>
             <option value="apartment">Apartment</option>
-            <option value="house">House</option>
-            <option value="villa">Villa</option>
-            <option value="cottage">Cottage</option>
-            <option value="studio">Studio</option>
+            <option value="home">Home</option>
             <option value="hostel">Hostel</option>
             <option value="room">Room</option>
           </select>

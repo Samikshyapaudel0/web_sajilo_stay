@@ -13,10 +13,25 @@ export const register = async (data: any) => {
 }
 
 export const login = async (data: any) => {
+  console.log("LOGIN API DATA:", data);
   try {
-    const response = await axiosInstance.post(API.AUTH.LOGIN, data); // path, data
+    const response = await axiosInstance.post(
+      API.AUTH.LOGIN,
+      data,
+     
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    ); // path, data
+     
     return response.data; // reponse ko body
+
+
   } catch (error: Error | any) {
+       console.log(error.response?.data);
+  
     throw new Error(error?.response?.data?.message || "Login failed");
   }
 }
