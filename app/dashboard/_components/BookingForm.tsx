@@ -76,8 +76,11 @@ export default function BookingForm({
             transition: Slide,
           });
         } else {
-          onSuccess?.();
-          router.refresh();
+          // onSuccess?.();
+          // router.refresh();
+          toast.success("Booking request submitted!");
+
+          router.push("/dashboard/bookings");
         }
       } catch (error: any) {
         if (error?.message !== "NEXT_REDIRECT") {

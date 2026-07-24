@@ -7,6 +7,7 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import { editUserSchema } from "./schema";
 import { handleUpdateUser } from "@/lib/actions/admin/user-action";
+import { API_BASE_URL } from "@/lib/api/axios_instance";
 
 const fieldClass =
   "h-12 w-full border border-hairline bg-surface-card px-4 text-on-dark placeholder:text-muted outline-none transition-colors focus:border-on-dark";
@@ -117,7 +118,7 @@ export default function UserFormEdit({ user }: { user?: any }) {
               </div>
             ) : user?.imageUrl ? (
               <Image
-                src={process.env.NEXT_PUBLIC_API_BASE_URL + user.imageUrl}
+                src={API_BASE_URL + user.imageUrl}
                 alt="Profile"
                 width={96}
                 height={96}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { API_BASE_URL } from "@/lib/api/axios_instance";
 import { handleGetUserById } from "@/lib/actions/admin/user-action";
 
 export default async function Page({
@@ -37,7 +38,7 @@ export default async function Page({
       <div className="mt-4 mb-8 flex items-center gap-4">
         {user.imageUrl ? (
           <Image
-            src={process.env.NEXT_PUBLIC_API_BASE_URL + user.imageUrl}
+            src={API_BASE_URL + user.imageUrl}
             alt="Profile"
             width={72}
             height={72}

@@ -1,5 +1,6 @@
 import { getPropertyById } from "@/lib/api/user/property";
 import Link from "next/link";
+import { API_BASE_URL } from "@/lib/api/axios_instance";
 
 export default async function Page({
   params,
@@ -46,7 +47,7 @@ export default async function Page({
             <div className="relative h-80 bg-gray-200">
               {property.images && property.images.length > 0 ? (
                 <img
-                  src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/uploads/${property.images[0]}`}
+                  src={`${API_BASE_URL}/uploads/${property.images[0]}`}
                   alt={property.title}
                   className="w-full h-full object-cover"
                 />

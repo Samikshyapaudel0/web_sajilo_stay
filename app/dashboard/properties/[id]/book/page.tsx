@@ -1,6 +1,7 @@
 import BookingForm from "@/app/dashboard/_components/BookingForm";
 import { getPropertyById } from "@/lib/api/user/property";
 import Link from "next/link";
+import { API_BASE_URL } from "@/lib/api/axios_instance";
 
 export default async function Page({
   params,
@@ -53,7 +54,7 @@ export default async function Page({
             <div className="relative h-48 bg-gray-200">
               {imageUrl ? (
                 <img
-                  src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/uploads/${imageUrl}`}
+                  src={`${API_BASE_URL}/uploads/${imageUrl}`}
                   alt={property.title}
                   className="w-full h-full object-cover"
                 />

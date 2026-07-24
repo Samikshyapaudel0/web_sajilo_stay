@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Slide, toast } from "react-toastify";
 import BookingStatusBadge from "@/app/dashboard/_components/BookingStatusBadge";
 import { handleConfirmBooking, handleRejectBooking } from "@/lib/actions/host/booking-action";
+import { API_BASE_URL } from "@/lib/api/axios_instance";
 
 export interface BookingData {
   _id: string;
@@ -113,7 +114,7 @@ export default function BookingTable({
             {booking.property?.images && booking.property.images.length > 0 && (
               <div className="relative w-full md:w-48 h-32 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
                 <img
-                  src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/uploads/${booking.property.images[0]}`}
+                  src={`${API_BASE_URL}/uploads/${booking.property.images[0]}`}
                   alt={booking.property.title || "Property"}
                   className="w-full h-full object-cover"
                 />

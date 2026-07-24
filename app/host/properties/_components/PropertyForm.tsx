@@ -11,6 +11,7 @@ import {
 } from "@/lib/actions/host/property-action";
 import { createProperty, updateProperty } from "@/lib/api/host/property";
 import { propertySchema, PropertyFormData } from "./schema";
+import { API_BASE_URL } from "@/lib/api/axios_instance";
 
 interface PropertyFormProps {
   property?: any;
@@ -60,7 +61,7 @@ export default function PropertyForm({
       if (property.images && property.images.length > 0) {
         setPreviewImages(
           property.images.map(
-            (img: string) => `${process.env.NEXT_PUBLIC_API_BASE_URL}/uploads/${img}`,
+            (img: string) => `${API_BASE_URL}/uploads/${img}`,
           ),
         );
       }

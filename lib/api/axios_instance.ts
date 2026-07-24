@@ -1,18 +1,18 @@
 import axios from "axios";
 import { getTokenCookie } from "../cookies";
-
-const BASE_URL =
+import { API } from "./endpoints";
+export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8089";
 
 // const axiosInstance = axios.create({
-//   baseURL: BASE_URL,
+//   baseURL: API_BASE_URL,
 //   headers: {
 //     "Content-Type": "application/json",
 //   },
 // });
 
 const axiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: API_BASE_URL,
 });
 
 // axiosInstance.interceptors.request.use(
@@ -38,16 +38,51 @@ const axiosInstance = axios.create({
 //   },
 // );
 
+// axiosInstance.interceptors.request.use(
+//   async (config) => {
+//     console.log("========== REQUEST ==========");
+
+//     const token = await getTokenCookie();
+
+//     if (token) {
+//       config.headers.Authorization = `Bearer ${token}`;
+//     }
+
+//     if (config.data instanceof FormData) {
+//       delete config.headers["Content-Type"];
+//     }
+
+//     console.log("URL:", (config.baseURL || "") + (config.url || ""));
+//     console.log("Authorization:", config.headers.Authorization);
+//     console.log("Headers:", config.headers);
+
+    
+//     return config;
+//   },
+//   (error) => Promise.reject(error),
+// );
+
 axiosInstance.interceptors.request.use(
   async (config) => {
     console.log("========== REQUEST ==========");
 
-    const token = await getTokenCookie();
+  const publicRoutes = [
+    "/api/v1/auth/login",
+    "/api/v1/auth/register",
+    "/api/v1/auth/request-password-reset",
+  ];
+    
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    // Only attach token for protected routes
+    if (!publicRoutes.includes(config.url || "")) {
+      const token = await getTokenCookie();
+
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
 
+    // Let Axios set multipart/form-data boundary automatically
     if (config.data instanceof FormData) {
       delete config.headers["Content-Type"];
     }
@@ -55,6 +90,7 @@ axiosInstance.interceptors.request.use(
     console.log("URL:", (config.baseURL || "") + (config.url || ""));
     console.log("Authorization:", config.headers.Authorization);
     console.log("Headers:", config.headers);
+    console.log("REQUEST DATA:", config.data);
 
     return config;
   },

@@ -1,4 +1,5 @@
 import { getAllProperties } from "@/lib/api/user/property";
+import { getAllFavorites } from "@/lib/api/user/favorite";
 import PropertyCard from "../_components/PropertyCard";
 import SearchBar from "../_components/SearchBar";
 
@@ -16,6 +17,7 @@ export default async function Page({
 
   let data: any[] = [];
   let pagination: any = null;
+  let favorites: any[] = [];
 
   try {
     const result = await getAllProperties({ page, limit, search, category, sortBy });
@@ -26,6 +28,13 @@ export default async function Page({
   } catch (error) {
     // API not available - show empty state
     console.log("API not available, showing empty state");
+  }
+
+  try {
+    const favoritesResult = await getAllFavorites();
+    favorites = favoritesResult.success ? favoritesResult.data : [];
+  } catch (error) {
+    console.log("Failed to fetch favorites");
   }
 
   return (
@@ -43,7 +52,11 @@ export default async function Page({
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
             {data.map((property: any) => (
-              <PropertyCard key={property._id} property={property} />
+              <PropertyCard 
+                key={property._id} 
+                property={property} 
+                isFavorited={favorites.some((fav: any) => fav.propertyId === property._id)}
+              />
             ))}
           </div>
 

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { API_BASE_URL } from "@/lib/api/axios_instance";
 
 export default function PropertyCard({ property }: { property: any }) {
   return (
@@ -6,7 +7,7 @@ export default function PropertyCard({ property }: { property: any }) {
       <div className="relative h-48 bg-gray-200">
         {property.images && property.images.length > 0 ? (
           <img
-            src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/uploads/${property.images[0]}`}
+            src={`${API_BASE_URL}/uploads/${property.images[0]}`}
             alt={property.title}
             className="w-full h-full object-cover"
           />

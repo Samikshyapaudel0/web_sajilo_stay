@@ -21,7 +21,11 @@ export const handleCreateBooking = async (data: CreateBookingInput) => {
     console.log("createBooking result:", result);
     if (result.success) {
       await revalidatePath("/dashboard/bookings");
-      redirect("/dashboard/bookings", RedirectType.replace);
+      // redirect("/dashboard/bookings", RedirectType.replace);
+      return {
+        success: true,
+        message: "Booking created successfully",
+      };
     } else {
       return {
         success: false,

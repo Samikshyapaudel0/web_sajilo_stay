@@ -1,5 +1,5 @@
 "use server"; // server side api call
-import { register, login, whoami, updatePassword, updateProfile } from "@/lib/api/auth";
+import { register, login, whoami, updatePassword, updateProfile, resetPassword, requestPasswordReset } from "@/lib/api/auth";
 import {
   LoginFormData,
   RegisterFormData,
@@ -109,6 +109,8 @@ export const handleLogout = async () => {
   redirect("/login", RedirectType.replace);
 };
 export const handleRequestPasswordReset = async (email: string) => {
+    console.log("SERVER ACTION EMAIL:", email);
+
   try {
     const result = await requestPasswordReset(email);
     if (result.success) {
@@ -127,24 +129,24 @@ export const handleRequestPasswordReset = async (email: string) => {
   }
 };
 
-// export const handleResetPassword = async (
-//   token: string,
-//   newPassword: string,
-// ) => {
-//   try {
-//     const result = await resetPassword(token, newPassword);
-//     if (result.success) {
-//       return { success: true, message: result.message };
-//     } else {
-//       return {
-//         success: false,
-//         message: result.message || "Reset password failed",
-//       };
-//     }
-//   } catch (error: Error | any) {
-//     return {
-//       success: false,
-//       message: error?.message || "Reset password failed",
-//     };
-//   }
-// };
+export const handleResetPassword = async (
+  token: string,
+  newPassword: string,
+) => {
+  try {
+    const result = await resetPassword(token, newPassword);
+    if (result.success) {
+      return { success: true, message: result.message };
+    } else {
+      return {
+        success: false,
+        message: result.message || "Reset password failed",
+      };
+    }
+  } catch (error: Error | any) {
+    return {
+      success: false,
+      message: error?.message || "Reset password failed",
+    };
+  }
+};

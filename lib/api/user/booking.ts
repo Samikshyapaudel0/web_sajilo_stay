@@ -27,7 +27,11 @@ export const getBookingById = async (id: string) => {
 export const createBooking = async (data: any) => {
   try {
     console.log("Creating booking with data:", data);
-    const response = await axiosInstance.post(API.USER.BOOKINGS.CREATE, data);
+    const response = await axiosInstance.post(API.USER.BOOKINGS.CREATE, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     console.log("Booking response:", response.data);
     return response.data;
   } catch (error: Error | any) {

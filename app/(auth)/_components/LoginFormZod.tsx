@@ -153,9 +153,15 @@ export default function LoginFormZod() {
           Remember me
         </label>
 
-        <button type="button" className="text-[#C63A07] hover:underline">
+        {/* <button type="button" className="text-[#C63A07] hover:underline">
           Forgot password?
-        </button>
+        </button> */}
+        <Link
+          href="/forget-password"
+          className="text-[#C63A07] hover:underline"
+        >
+          Forgot password?
+        </Link>
       </div>
 
       {/* Submit */}
@@ -190,3 +196,4 @@ export default function LoginFormZod() {
     </form>
   );
 }
+

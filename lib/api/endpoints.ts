@@ -6,6 +6,9 @@ export const API = {
     WHOAMI: "/api/v1/auth/whoami",
     UPDATE: "/api/v1/auth/update",
     UPDATE_PASSWORD: "/api/v1/auth/update-password",
+    REQUEST_PASSWORD_RESET: "/api/v1/auth/request-password-reset",
+    RESET_PASSWORD: (token: string): string =>
+      `/api/v1/auth/reset-password/${token}`,
   },
   ADMIN: {
     USERS: {
@@ -41,6 +44,11 @@ export const API = {
       GET_BY_ID: (id: string) => `/api/v1/bookings/${id}`,
       CREATE: "/api/v1/bookings",
       CANCEL: (id: string) => `/api/v1/bookings/${id}/cancel`,
+    },
+    FAVORITES: {
+      GET_ALL: "/api/v1/favorites",
+      CREATE: "/api/v1/favorites",
+      DELETE: (propertyId: string) => `/api/v1/favorites/${propertyId}`,
     },
   },
 };

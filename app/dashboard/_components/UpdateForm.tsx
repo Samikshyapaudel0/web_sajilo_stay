@@ -7,6 +7,7 @@ import { UpdateProfileFormData, updateProfileSchema } from "./schema";
 import { Slide, toast } from "react-toastify";
 import Image from "next/image";
 import { handleUpdateProfile } from "@/lib/actions/auth_action";
+import { API_BASE_URL } from "@/lib/api/axios_instance";
 export default function UpdateForm({ user }: { user: any }) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState("");
@@ -123,7 +124,7 @@ export default function UpdateForm({ user }: { user: any }) {
               </div>
             ) : user?.imageUrl ? (
               <Image
-                src={process.env.NEXT_PUBLIC_API_BASE_URL + user.imageUrl}
+                src={API_BASE_URL + user.imageUrl}
                 alt="Profile Image"
                 width={128}
                 height={128}

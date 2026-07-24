@@ -1,4 +1,3 @@
-
 import axiosInstance from "./axios_instance";
 import { API } from "./endpoints";
 
@@ -10,7 +9,7 @@ export const register = async (data: any) => {
     throw new Error(error?.response?.data?.message || "Registration failed");
     // error?.response?.data -> response ko body
   }
-}
+};
 
 export const login = async (data: any) => {
   console.log("LOGIN API DATA:", data);
@@ -18,23 +17,21 @@ export const login = async (data: any) => {
     const response = await axiosInstance.post(
       API.AUTH.LOGIN,
       data,
-     
+
       {
         headers: {
           "Content-Type": "application/json",
         },
       },
     ); // path, data
-     
+
     return response.data; // reponse ko body
-
-
   } catch (error: Error | any) {
-       console.log(error.response?.data);
-  
+    console.log(error.response?.data);
+
     throw new Error(error?.response?.data?.message || "Login failed");
   }
-}
+};
 export const whoami = async () => {
   try {
     const response = await axiosInstance.get(API.AUTH.WHOAMI);
@@ -44,7 +41,7 @@ export const whoami = async () => {
       error?.response?.data?.message || "Failed to fetch user details",
     );
   }
-}
+};
 
 export const updateProfile = async (data: any) => {
   try {
@@ -69,5 +66,32 @@ export const updatePassword = async (data: any) => {
     throw new Error(
       error?.response?.data?.message || "Failed to update password",
     );
+  }
+};
+export const requestPasswordReset = async (email: string) => {
+  console.log("Sending email:", email);
+
+  try {
+    const response = await axiosInstance.post(API.AUTH.REQUEST_PASSWORD_RESET, {
+      email,
+    });
+
+    console.log("Response:", response.data);
+
+    return response.data;
+  } catch (error: any) {
+    console.log(error.response?.data);
+    throw error;
+  }
+};
+
+export const resetPassword = async (token: string, newPassword: string) => {
+  try {
+    const response = await axiosInstance.post(API.AUTH.RESET_PASSWORD(token), {
+      newPassword: newPassword,
+    });
+    return response.data;
+  } catch (error: Error | any) {
+    throw new Error(error?.response?.data?.message || "Reset password failed");
   }
 };

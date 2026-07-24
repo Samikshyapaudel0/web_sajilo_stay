@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import Modal from "../../_components/Modal";
+import { API_BASE_URL } from "@/lib/api/axios_instance";
 import { handleDeleteProperty } from "@/lib/actions/host/property-action";
 
 export default function PropertyTable({
@@ -139,7 +140,7 @@ export default function PropertyTable({
                     <div className="flex items-center gap-3">
                       {property.images && property.images.length > 0 ? (
                         <img
-                          src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/uploads/${property.images[0]}`}
+                          src={`${API_BASE_URL}/uploads/${property.images[0]}`}
                           alt={property.title}
                           width={48}
                           height={48}
