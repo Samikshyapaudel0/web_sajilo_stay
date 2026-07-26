@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Slide, toast } from "react-toastify";
 import BookingStatusBadge from "./BookingStatusBadge";
 import { handleCancelBooking } from "@/lib/actions/booking_action";
+import { handleInitiatePayment } from "@/lib/actions/payment_action";
 import { API_BASE_URL } from "@/lib/api/axios_instance";
 
 export interface BookingData {
@@ -67,6 +68,31 @@ export default function BookingCard({
     });
   };
 
+  const handlePayWithKhalti = () => {
+    startTransition(async () => {
+      try {
+        const returnUrl = `${window.location.origin}/payment/callback`;
+        const result = await handleInitiatePayment({ 
+          bookingId: booking._id,
+          returnUrl,
+        });
+        if (result.success && result.paymentUrl) {
+          window.open(result.paymentUrl, "_blank");
+        } else {
+          toast.error(result.message || "Failed to initiate payment", {
+            position: "top-center",
+            transition: Slide,
+          });
+        }
+      } catch (error: any) {
+        toast.error(error?.message || "Failed to initiate payment", {
+          position: "top-center",
+          transition: Slide,
+        });
+      }
+    });
+  };
+
   return (
     <div
       className={`bg-white rounded-lg shadow p-6 ${faded ? "opacity-75" : ""}`}
@@ -117,15 +143,26 @@ export default function BookingCard({
               </p>
             </div>
           </div>
-          {showCancel && booking.status === "pending" && (
-            <button
-              onClick={handleCancel}
-              disabled={isPending}
-              className="mt-4 h-10 px-4 border border-red-300 text-xs font-bold uppercase tracking-[1.5px] text-red-600 transition-colors hover:bg-red-50 rounded-lg disabled:opacity-50"
-            >
-              {isPending ? "Cancelling..." : "Cancel Booking"}
-            </button>
-          )}
+          <div className="mt-4 flex gap-2">
+            {showCancel && booking.status === "pending" && (
+              <button
+                onClick={handleCancel}
+                disabled={isPending}
+                className="h-10 px-4 border border-red-300 text-xs font-bold uppercase tracking-[1.5px] text-red-600 transition-colors hover:bg-red-50 rounded-lg disabled:opacity-50"
+              >
+                {isPending ? "Cancelling..." : "Cancel Booking"}
+              </button>
+            )}
+            {(booking.status === "confirmed" || booking.status === "pending") && (
+              <button
+                onClick={handlePayWithKhalti}
+                disabled={isPending}
+                className="h-10 px-4 bg-purple-600 text-white text-xs font-bold uppercase tracking-[1.5px] transition-colors hover:bg-purple-700 rounded-lg disabled:opacity-50"
+              >
+                {isPending ? "Processing..." : "Pay with Khalti"}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

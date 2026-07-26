@@ -183,7 +183,7 @@ export default function PropertyTable({
                         View
                       </Link>
                       <Link
-                        href={`/host/properties/${property._id}/edit`}
+                        href={`/host/properties/${property._id}`}
                         className="text-muted hover:text-[#C63A07] transition-colors"
                       >
                         Edit

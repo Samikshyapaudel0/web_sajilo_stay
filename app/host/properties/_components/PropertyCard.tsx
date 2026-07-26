@@ -47,7 +47,7 @@ export default function PropertyCard({ property }: { property: any }) {
             View
           </Link>
           <Link
-            href={`/host/properties/${property._id}/edit`}
+            href={`/host/properties/${property._id}`}
             className="flex-1 h-10 flex items-center justify-center bg-[#C63A07] text-xs font-bold uppercase tracking-[1.5px] text-white transition-opacity hover:opacity-90 rounded"
           >
             Edit

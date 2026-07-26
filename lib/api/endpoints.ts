@@ -50,6 +50,10 @@ export const API = {
       CREATE: "/api/v1/favorites",
       DELETE: (propertyId: string) => `/api/v1/favorites/${propertyId}`,
     },
+    PAYMENTS: {
+      INITIATE: "/api/v1/payments/initiate",
+      VERIFY: "/api/v1/payments/verify",
+    },
   },
 };
  
