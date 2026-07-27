@@ -68,7 +68,7 @@ export default function BookingCard({
     });
   };
 
-  const handlePayWithKhalti = () => {
+  const handlePayWithEsewa = () => {
     startTransition(async () => {
       try {
         const returnUrl = `${window.location.origin}/payment/callback`;
@@ -77,7 +77,7 @@ export default function BookingCard({
           returnUrl,
         });
         if (result.success && result.paymentUrl) {
-          window.open(result.paymentUrl, "_blank");
+          window.location.href = result.paymentUrl;
         } else {
           toast.error(result.message || "Failed to initiate payment", {
             position: "top-center",
@@ -155,11 +155,11 @@ export default function BookingCard({
             )}
             {(booking.status === "confirmed" || booking.status === "pending") && (
               <button
-                onClick={handlePayWithKhalti}
+                onClick={handlePayWithEsewa}
                 disabled={isPending}
-                className="h-10 px-4 bg-purple-600 text-white text-xs font-bold uppercase tracking-[1.5px] transition-colors hover:bg-purple-700 rounded-lg disabled:opacity-50"
+                className="h-10 px-4 bg-green-600 text-white text-xs font-bold uppercase tracking-[1.5px] transition-colors hover:bg-green-700 rounded-lg disabled:opacity-50"
               >
-                {isPending ? "Processing..." : "Pay with Khalti"}
+                {isPending ? "Processing..." : "Pay with eSewa"}
               </button>
             )}
           </div>

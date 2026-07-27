@@ -13,12 +13,11 @@ export default function PaymentCallbackPage() {
   useEffect(() => {
     const verifyPayment = async () => {
       try {
-        const pidx = searchParams.get("pidx");
-        const transactionId = searchParams.get("transaction_id");
-        const amount = searchParams.get("amount");
-        const bookingId = searchParams.get("booking_id");
+        const oid = searchParams.get("oid");
+        const refId = searchParams.get("refId");
+        const amt = searchParams.get("amt");
 
-        if (!pidx || !transactionId || !amount || !bookingId) {
+        if (!oid || !refId || !amt) {
           toast.error("Missing payment parameters", {
             position: "top-center",
             transition: Slide,
@@ -28,10 +27,10 @@ export default function PaymentCallbackPage() {
         }
 
         const result = await handleVerifyPayment({
-          pidx,
-          transactionId,
-          amount: parseFloat(amount),
-          bookingId,
+          pidx: refId,
+          transactionId: refId,
+          amount: parseFloat(amt),
+          bookingId: oid,
         });
 
         if (result.success) {
